@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "edit-json-file": "^1.4.0",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
     "simple-git": "^2.11.0"

@@ -3,16 +3,21 @@ const shell = require("shelljs");
 const fs = require("fs");
 const rimraf = require("rimraf");
 const path = require("path");
+const { fullVersion } = require("./versions");
 const { ignorePackages } = require("./packageList");
 const assert = require("assert");
-
-const gitClonedPath = __dirname;
-const cssnanoPath = gitClonedPath + "/cssnano";
-const ignore = new Set(ignorePackages);
-const cssnanoRepoLink = "https://github.com/cssnano/cssnano.git";
-const nightlyRepo = "https://github.com/cssnano/cssnano-nightly.git";
+const editJsonFile = require("edit-json-file");
+const {
+  gitClonedPath,
+  cssnanoPath,
+  cssnanoRepoLink,
+  nightlyRepo,
+  registry,
+  version
+} = require("./config");
 
 shell.config.fatal = true;
+const ignore = new Set(ignorePackages);
 
 async function run() {
   const git = simpleGit(gitClonedPath);
@@ -51,19 +56,38 @@ async function run() {
   );
 
   try {
-    shell.exec("yarn");
-    shell.exec("yarn test:only");
-    shell.exec("yarn test:only");
-    shell.exec("yarn build:packages");
+    // shell.exec("yarn");
+    // shell.exec("yarn test:only");
+    // shell.exec("yarn test:only");
+    // shell.exec("yarn build:packages");
   } catch (error) {
     throw new Error(error);
   }
 
-  shell.cp("-R", __dirname + "/.npmrc", cssnanoPath);
-
   /**
    * Publish script here,
    */
+  packagesList.forEach(async package => {
+    if (ignore.has(package)) {
+      rimraf.sync(path.resolve(packagePath, package));
+      return;
+    }
+
+    const packagePath = cssnanoPath + "/packages/" + package;
+
+    if (fs.existsSync(packagePath + "/dist")) {
+      shell.cd(packagePath);
+      let packageJson = editJsonFile(`${packagePath}/package.json`);
+      packageJson.set("scripts.prepublish", "");
+      packageJson.set("scripts.prebuild", "");
+      packageJson.set("version", `${version}-nightly.${fullVersion}`);
+      packageJson.save();
+
+      // TODO: uncomment me
+      //   shell.cp("-R", __dirname + "/.npmrc", packagePath);
+      shell.exec("npm publish --registry" + registry);
+    }
+  });
 }
 
 run();

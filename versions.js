@@ -7,6 +7,6 @@ const semver = {
 
 module.exports = {
   semver,
-  version: `${semver.major}.${semver.minor}.${semver.patch}`,
+  fullVersion: `${semver.major}.${semver.minor}.${semver.patch}`,
   date
 };
