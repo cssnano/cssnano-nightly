@@ -56,10 +56,10 @@ async function run() {
   );
 
   try {
-    // shell.exec("yarn");
-    // shell.exec("yarn test:only");
-    // shell.exec("yarn test:only");
-    // shell.exec("yarn build:packages");
+    shell.exec("yarn");
+    shell.exec("yarn test:only");
+    shell.exec("yarn test:only");
+    shell.exec("yarn build:packages");
   } catch (error) {
     throw new Error(error);
   }
