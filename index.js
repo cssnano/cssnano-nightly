@@ -56,10 +56,10 @@ async function run() {
   );
 
   try {
-    // shell.exec("yarn");
-    // shell.exec("yarn test:only");
-    // shell.exec("yarn test:only");
-    // shell.exec("yarn build:packages");
+    shell.exec("yarn");
+    shell.exec("yarn test:only");
+    shell.exec("yarn test:only");
+    shell.exec("yarn build:packages");
   } catch (error) {
     throw new Error(error);
   }
@@ -82,9 +82,7 @@ async function run() {
       packageJson.set("scripts.prebuild", "");
       packageJson.set("version", `${version}-nightly.${fullVersion}`);
       packageJson.save();
-
-      // TODO: uncomment me
-      //   shell.cp("-R", __dirname + "/.npmrc", packagePath);
+      shell.cp("-R", __dirname + "/.npmrc", packagePath);
       shell.exec("npm publish --registry" + registry);
     }
   });
