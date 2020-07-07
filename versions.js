@@ -7,9 +7,10 @@ const semver = {
   patch: date.getUTCDate()
 };
 
+const fullVersion = `${semver.major}.${semver.minor}.${semver.patch}`;
 module.exports = {
   semver,
-  fullVersion: `${semver.major}.${semver.minor}.${semver.patch}`,
+  fullVersion,
   date,
-  tag: `${version}-nightly.${this.fullVersion}`
+  tag: `${version}-nightly.${fullVersion}`
 };
