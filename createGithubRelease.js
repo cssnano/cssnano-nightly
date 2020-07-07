@@ -2,6 +2,7 @@ const { Octokit } = require("@octokit/rest");
 const createChangelog = require("./createChangelog");
 const { githubToken } = require("./config");
 const { tag } = require("./versions");
+const isNewChanges = require("./isNewChanges");
 
 const octokit = new Octokit({
   auth: `token ${githubToken}`
@@ -32,4 +33,10 @@ function createGithubRelease() {
     });
 }
 
-createGithubRelease();
+if (isNewChanges()) {
+  createGithubRelease();
+} else {
+  process.stdout.write(
+    `There is no new change in the cssnano repo since the last publish from our repo`
+  );
+}
