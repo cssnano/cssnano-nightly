@@ -16,16 +16,16 @@ jobs:
           node_version: 12
       - name: Install
         run: yarn install --frozen-lockfile
-      - name: Prepare Npm
-        run: sh npm.sh
-        env:
-          REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
-          REGISTRY_URL: registry.npmjs.org
-      - name: Run
-        run: node index.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
-          REGISTRY_URL: registry.npmjs.org
+#       - name: Prepare Npm
+#         run: sh npm.sh
+#         env:
+#           REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
+#           REGISTRY_URL: registry.npmjs.org
+#       - name: Run
+#         run: node index.js
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
+#           REGISTRY_URL: registry.npmjs.org
       # - name: GITHUB_RELEASE
       #   run: node createGithubRelease.js
       #   env:
