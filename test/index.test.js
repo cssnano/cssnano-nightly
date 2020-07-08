@@ -1,11 +1,10 @@
 const path = require("path");
+const fs = require("fs");
 const shell = require("shelljs");
 const { spawnRegistry } = require("./helper/registry");
-// const { runNmp } = require("./helper/npm");
-// const { runCli } = require("./helper/cli");
 const rimraf = require("rimraf");
-const { getTempFolder } = require("./helper/fs-utils");
 const tmp = require("tmp");
+const { runCli } = require("./helper/cli");
 const { tag } = require("../versions");
 const publish = require("../publish");
 
@@ -16,10 +15,8 @@ const registryUrl = "http://localhost:4873/";
 
 describe("E2E cssnano ", () => {
   let childFork;
-  const folder = getTempFolder();
-  let tmpDir;
+
   beforeAll(async () => {
-    // tmpDir = tmp.dirSync();
     childFork = await spawnRegistry();
     try {
       await publish(registryUrl);
@@ -32,9 +29,7 @@ describe("E2E cssnano ", () => {
     if (childFork) {
       childFork.kill();
     }
-    if (tmpDir) {
-      tmpDir.removeCallback();
-    }
+
     rimraf.sync("cssnano");
   });
 
@@ -45,4 +40,32 @@ describe("E2E cssnano ", () => {
     ).toBe(0);
     done();
   });
+
+  it(
+    "should minify the input using postcss cli and cssnano" + tag,
+    async done => {
+      await shell.cd(__dirname + "/fixture");
+      await shell.exec(
+        "npm install cssnano@" + tag + " --registry " + registryUrl
+      );
+
+      const cmdOutput = await runCli(
+        path.resolve(__dirname, "../node_modules", ".bin", "postcss"),
+        [
+          path.resolve(__dirname, "./fixture/input.css"),
+          "-o",
+          path.resolve(__dirname, "./fixture/output.css")
+        ]
+      );
+      expect(
+        fs.existsSync(path.resolve(__dirname, "./fixture/output.css"))
+      ).toBe(true);
+      const outputCode = fs.readFileSync(
+        path.resolve(__dirname, "./fixture/output.css"),
+        "utf-8"
+      );
+      expect(outputCode.split("\n").length).toBe(1);
+      done();
+    }
+  );
 });

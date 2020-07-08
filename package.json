@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "jest": "^26.1.0",
+    "postcss-cli": "^7.1.1",
     "tmp": "^0.2.1",
     "verdaccio": "^4.6.2",
     "verdaccio-auth-memory": "^9.5.0",

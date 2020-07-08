@@ -1,3 +1,5 @@
 cssnano
 node_modules
 .npmrc
+test/fixture/output.css
+test/fixture/package-lock.json
