@@ -1,41 +1,20 @@
 const fetch = require("node-fetch");
-const { date } = require("./utils");
+const { date, getTodayDate, getYesterdayDate } = require("./utils");
 
-let cssnanoLastCommitDate;
+const { tdate, tmonth, tyear } = getTodayDate();
+const { ydate, ymonth, yyear } = getYesterdayDate();
 
-function isNewChange() {
-  fetch("https://api.github.com/repos/cssnano/cssnano/commits/master")
-    .then(res => res.json())
-    .then(res => {
-      fetch(
-        `https://api.github.com/repos/cssnano/cssnano/git/commits/${res.sha}`
-      )
-        .then(r => r.json())
-        .then(commit => {
-          cssnanoLastCommitDate = new Date(commit.committer.date);
+const yesterdayDate = `${yyear}-${ymonth}-${ydate}`;
+const todayDate = `${tyear}-${tmonth}-${tdate}`;
 
-          fetch(
-            "https://api.github.com/repos/cssnano/cssnano-nightly/commits/master"
-          )
-            .then(_ => _.json())
-            .then(_ => {
-              fetch(
-                `https://api.github.com/repos/cssnano/cssnano-nightly/git/commits/${_.sha}`
-              )
-                .then(_ => _.json())
-                .then(cres => {
-                  const { message, committer } = cres;
-
-                  const lastNightlyPubCommit = new Date(committer.date);
-
-                  return (
-                    cssnanoLastCommitDate.getTime() >
-                    lastNightlyPubCommit.getTime()
-                  );
-                });
-            });
-        });
-    });
+async function isNewChange() {
+  let commits = await fetch(
+    //   temporary adding the "'2019-02-14'", replace it with `yesterdayDate`
+    // "'2019-02-14'" - is the date of the last release
+    `https://api.github.com/repos/cssnano/cssnano/commits?branch=master&since=${"2019-02-14"}&until=${todayDate}`
+  );
+  commits = await commits.json();
+  return Array.isArray(commits) && commits.length > 0;
 }
 
 module.exports = isNewChange;

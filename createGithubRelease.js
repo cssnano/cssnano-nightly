@@ -33,10 +33,16 @@ function createGithubRelease() {
     });
 }
 
-if (isNewChanges()) {
-  createGithubRelease();
-} else {
-  process.stdout.write(
-    `There is no new change in the cssnano repo since the last publish from our repo`
-  );
+async function runAsync() {
+  const shouldRun = await isNewChanges();
+
+  if (shouldRun) {
+    createGithubRelease();
+  } else {
+    process.stdout.write(
+      `There is no new change in the cssnano repo since the last publish from our repo`
+    );
+  }
 }
+
+runAsync();
