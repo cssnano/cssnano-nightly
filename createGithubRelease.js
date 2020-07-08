@@ -11,7 +11,7 @@ const octokit = new Octokit({
 // when running the action for first time. give the first argument of this as
 // createChangelog('2019-02-14')
 // and after that, keep it null i.e `createChange()` only
-const { body } = createChangelog();
+const { body } = createChangelog("2019-02-14");
 
 function createGithubRelease() {
   octokit.repos
