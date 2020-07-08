@@ -22,10 +22,11 @@ const ignore = new Set(ignorePackages);
 module.exports = async function run(registryUrl = registry) {
   const git = simpleGit(gitClonedPath);
 
-  if (!fs.existsSync(cssnanoPath)) {
-    await git.clone(cssnanoRepoLink);
+  if (fs.existsSync(cssnanoPath)) {
+    await rimraf.sync(cssnanoPath);
   }
 
+  await git.clone(cssnanoRepoLink);
   await shell.cd("cssnano");
   assert.strictEqual(
     /**
@@ -42,9 +43,9 @@ module.exports = async function run(registryUrl = registry) {
 
   const packagesList = shell.ls("packages/");
   const packagePath = cssnanoPath + "/packages";
-  packagesList.forEach(package => {
-    if (ignore.has(package)) {
-      rimraf.sync(path.resolve(packagePath, package));
+  packagesList.forEach(pkg => {
+    if (ignore.has(pkg)) {
+      rimraf.sync(path.resolve(packagePath, pkg));
     }
   });
 
@@ -67,23 +68,28 @@ module.exports = async function run(registryUrl = registry) {
   /**
    * Publish script here,
    */
-  packagesList.forEach(async package => {
-    if (ignore.has(package)) {
-      rimraf.sync(path.resolve(packagePath, package));
+  packagesList.forEach(async pkg => {
+    if (ignore.has(pkg)) {
+      rimraf.sync(path.resolve(packagePath, pkg));
       return;
     }
 
-    const packagePath = cssnanoPath + "/packages/" + package;
+    const pkgPath = cssnanoPath + "/packages/" + pkg;
 
-    if (fs.existsSync(packagePath + "/dist")) {
-      shell.cd(packagePath);
-      let packageJson = editJsonFile(`${packagePath}/package.json`);
+    if (fs.existsSync(pkgPath + "/dist")) {
+      shell.cd(pkgPath);
+      let packageJson = editJsonFile(`${pkgPath}/package.json`);
       packageJson.set("scripts.prepublish", "");
       packageJson.set("scripts.prebuild", "");
       packageJson.set("version", `${version}-nightly.${fullVersion}`);
+      packageJson.set("publishConfig.registry", registryUrl);
       packageJson.save();
-      shell.cp("-R", __dirname + "/.npmrc", packagePath);
-      shell.exec("npm publish");
+      shell.cp("-R", __dirname + "/.npmrc", pkgPath);
+      try {
+        shell.exec("npm publish");
+      } catch (error) {
+        throw new Error(error);
+      }
     }
   });
 };

@@ -6,5 +6,23 @@
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
     "simple-git": "^2.11.0"
+  },
+  "scripts": {
+    "test": "jest ./test",
+    "build": "node .",
+    "prebuild": "npm run test"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "tmp": "^0.2.1",
+    "verdaccio": "^4.6.2",
+    "verdaccio-auth-memory": "^9.5.0",
+    "verdaccio-memory": "^9.5.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/cssnano/"
+    ]
   }
 }
