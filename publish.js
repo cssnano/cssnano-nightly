@@ -83,7 +83,7 @@ module.exports = async function run(registryUrl = registry) {
       packageJson.set("version", `${version}-nightly.${fullVersion}`);
       packageJson.save();
       shell.cp("-R", __dirname + "/.npmrc", packagePath);
-      shell.exec("npm publish --registry" + registryUrl);
+      shell.exec("npm publish");
     }
   });
 };
