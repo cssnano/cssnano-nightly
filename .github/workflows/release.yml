@@ -27,14 +27,14 @@ jobs:
           REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
           REGISTRY_URL: registry.npmjs.org
-      - name: Run
-        run: npm run build
-        env:
-          REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
-          REGISTRY_URL: registry.npmjs.org
-      - name: GITHUB_RELEASE
-        run: node createGithubRelease.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
-          REGISTRY_URL: registry.npmjs.org
+      # - name: Run
+      #   run: npm run build
+      #   env:
+      #     REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
+      #     REGISTRY_URL: registry.npmjs.org
+      # - name: GITHUB_RELEASE
+      #   run: node createGithubRelease.js
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
+      #     REGISTRY_URL: registry.npmjs.org
