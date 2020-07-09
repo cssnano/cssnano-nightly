@@ -86,7 +86,7 @@ module.exports = async function run(registryUrl = registry) {
       packageJson.save();
       shell.cp("-R", __dirname + "/.npmrc", pkgPath);
       try {
-        shell.exec("npm publish");
+        shell.exec("npm publish --tag nightly");
       } catch (error) {
         throw new Error(error);
       }

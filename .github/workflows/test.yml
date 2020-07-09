@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node (latest)
+        uses: actions/setup-node@v1
+        with:
+          node_version: 12
+      - name: Install
+        run: yarn install --frozen-lockfile
+      - name: Prepare Npm
+        run: sh npm.sh
+        env:
+          REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
+          REGISTRY_URL: registry.npmjs.org
+      - name: Test
+        run: npm run test
+        env:
+          REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
+          REGISTRY_URL: registry.npmjs.org

@@ -41,6 +41,13 @@ describe("E2E cssnano ", () => {
     done();
   });
 
+  it("should install the latest nightly tag", async done => {
+    expect(
+      shell.exec("npm install cssnano@nightly --registry " + registryUrl).code
+    ).toBe(0);
+    done();
+  });
+
   it(
     "should minify the input using postcss cli and cssnano" + tag,
     async done => {
