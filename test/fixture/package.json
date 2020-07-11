@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "cssnano": "^4.0.0-nightly.0.7.9"
+    "cssnano": "^4.0.0-nightly.2020.7.11"
   }
 }

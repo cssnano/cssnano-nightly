@@ -7,6 +7,7 @@ const { fullVersion } = require("./versions");
 const { ignorePackages } = require("./packageList");
 const assert = require("assert");
 const editJsonFile = require("edit-json-file");
+const newdepList = require("./dependenciesList");
 const {
   gitClonedPath,
   cssnanoPath,
@@ -83,6 +84,13 @@ module.exports = async function run(registryUrl = registry) {
       packageJson.set("scripts.prebuild", "");
       packageJson.set("version", `${version}-nightly.${fullVersion}`);
       packageJson.set("publishConfig.registry", registryUrl);
+
+      if (newdepList[pkg]) {
+        packageJson.set("dependencies", {
+          ...newdepList[pkg]
+        });
+      }
+
       packageJson.save();
       shell.cp("-R", __dirname + "/.npmrc", pkgPath);
       try {
