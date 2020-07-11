@@ -33,6 +33,11 @@ describe("E2E cssnano ", () => {
     rimraf.sync("cssnano");
   });
 
+  it("should mock " + tag, async done => {
+    expect(1).toBe(1);
+    done();
+  });
+
   it("should install the latest nightly version" + tag, async done => {
     expect(
       shell.exec("npm install cssnano@" + tag + " --registry " + registryUrl)
