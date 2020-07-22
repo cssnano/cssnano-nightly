@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "jest ./test",
-    "build": "node .",
+    "build": "node ."
   },
   "devDependencies": {
     "jest": "^26.1.0",
