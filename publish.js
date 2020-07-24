@@ -59,6 +59,7 @@ module.exports = async function run(registryUrl = registry) {
 
   try {
     shell.exec("yarn install");
+    shell.exec("yarn test:only");
     shell.exec("npx lerna link");
     shell.exec("yarn build:packages");
   } catch (error) {
@@ -82,7 +83,7 @@ module.exports = async function run(registryUrl = registry) {
       packageJson.set("scripts.prepublish", "");
       packageJson.set("scripts.prebuild", "");
       packageJson.set("version", `${version}-nightly.${fullVersion}`);
-      packageJson.set("publishConfig.registry", registryUrl);
+      //   packageJson.set("publishConfig.registry", registryUrl);
 
       if (newdepList[pkg]) {
         packageJson.set("dependencies", {
