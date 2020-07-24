@@ -3,9 +3,6 @@ name: Release
 on:
   schedule:
     - cron: "0 17 * * *" # run at 5:00 PM UTC
-  push:
-    branches:
-      - "master"
 
 jobs:
   release:
