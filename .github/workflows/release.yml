@@ -3,6 +3,9 @@ name: Release
 on:
   schedule:
     - cron: "0 17 * * *" # run at 5:00 PM UTC
+  push:
+    branches:
+      - "master"
 
 jobs:
   release:
@@ -20,12 +23,6 @@ jobs:
         run: sh npm.sh
         env:
           REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
-          REGISTRY_URL: registry.npmjs.org
-      - name: Test
-        run: npm run test
-        env:
-          REGISTRY_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github already has this token by default in repo
           REGISTRY_URL: registry.npmjs.org
       - name: Run
         run: npm run build
