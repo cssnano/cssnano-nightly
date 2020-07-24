@@ -58,9 +58,8 @@ module.exports = async function run(registryUrl = registry) {
   );
 
   try {
-    shell.exec("yarn");
-    shell.exec("yarn test:only");
-    shell.exec("yarn test:only");
+    shell.exec("yarn install");
+    shell.exec("npx lerna link");
     shell.exec("yarn build:packages");
   } catch (error) {
     throw new Error(error);
@@ -94,6 +93,7 @@ module.exports = async function run(registryUrl = registry) {
       packageJson.save();
       shell.cp("-R", __dirname + "/.npmrc", pkgPath);
       try {
+        console.log("publishing ", pkg);
         shell.exec("npm publish --tag nightly");
       } catch (error) {
         throw new Error(error);
