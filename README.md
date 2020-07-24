@@ -2,4 +2,6 @@
 
 Nightly release for cssnano
 
-> ## WIP
+## Releases
+
+Check the [releases](https://github.com/cssnano/cssnano-nightly/releases) section for all the versions
