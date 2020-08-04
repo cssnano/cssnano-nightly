@@ -20,4 +20,4 @@ jobs:
       - name: Prepare Npm
         run: sh npm.sh
       - name: Test
-        run: npm run testd
+        run: npm run test
