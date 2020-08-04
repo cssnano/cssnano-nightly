@@ -52,8 +52,8 @@ module.exports = async function run(registryUrl = registry) {
 
   assert.strictEqual(
     shell.ls("packages/").length + ignorePackages.length,
-    41,
-    "Something wrong while deleting ignored + deprecated package. Expected 41 but got " +
+    42,
+    "Something wrong while deleting ignored + deprecated package. Expected 42 but got " +
       parseInt(shell.ls("packages/").length + ignorePackages.length)
   );
 
