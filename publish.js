@@ -44,6 +44,7 @@ module.exports = async function run(registryUrl = registry) {
 
   const packagesList = shell.ls("packages/");
   const packagePath = cssnanoPath + "/packages";
+
   packagesList.forEach(pkg => {
     if (ignore.has(pkg)) {
       rimraf.sync(path.resolve(packagePath, pkg));
@@ -80,6 +81,7 @@ module.exports = async function run(registryUrl = registry) {
     if (fs.existsSync(pkgPath + "/dist")) {
       shell.cd(pkgPath);
       let packageJson = editJsonFile(`${pkgPath}/package.json`);
+
       packageJson.set("scripts.prepublish", "");
       packageJson.set("scripts.prebuild", "");
       packageJson.set("version", `${version}-nightly.${fullVersion}`);
@@ -87,6 +89,7 @@ module.exports = async function run(registryUrl = registry) {
 
       if (newdepList[pkg]) {
         packageJson.set("dependencies", {
+          ...packageJson.get("dependencies"),
           ...newdepList[pkg]
         });
       }
